@@ -28,10 +28,10 @@ POST     /content/v3/dialcode/reserve/:identifier controllers.v3.ContentControll
 PATCH    /content/v3/dialcode/release/:identifier controllers.v3.ContentController.releaseDialcodes(identifier:String)
 POST     /content/v3/reject/:identifier           controllers.v4.ContentController.reviewReject(identifier:String)
 POST     /content/v3/unlisted/publish/:identifier  controllers.v3.ContentController.publishUnlisted(identifier:String)
-POST     /content/v1/retirement/schedule    controllers.v3.ContentController.scheduleRetirement
-GET      /content/v1/retirement/validate/:identifier controllers.v3.ContentController.isRetirementScheduled(identifier:String)
-POST   /content/v1/retirement/request/decide   controllers.v3.ContentController.decideRetirementRequest
-POST   /content/v1/retirement/status   controllers.v3.ContentController.getRetirementStatus
+POST     /content/v1/retirement/schedule    controllers.v3.ExtendedContentController.scheduleRetirement
+GET      /content/v1/retirement/validate/:identifier controllers.v3.ExtendedContentController.isRetirementScheduled(identifier:String)
+POST   /content/v1/retirement/request/decide   controllers.v3.ExtendedContentController.decideRetirementRequest
+POST   /content/v1/retirement/status   controllers.v3.ExtendedContentController.getRetirementStatus
 
 # Collection APIs
 PATCH     /content/v3/hierarchy/add         controllers.v3.ContentController.addHierarchy
