@@ -27,6 +27,7 @@ import java.util
 import java.util.{Date, UUID}
 import scala.collection.JavaConverters.collectionAsScalaIterableConverter
 import scala.concurrent.{ExecutionContext, Future, Promise}
+import com.datastax.driver.core.{LocalDate => CassandraLocalDate}
 
 object ExtendedRetireManager {
   val finalStatus: util.List[String] = util.Arrays.asList("Flagged", "Live", "Unlisted")
@@ -340,10 +341,16 @@ object ExtendedRetireManager {
     toLocalDateOpt(lastEnrollmentStr).foreach(date => retirementMap.put(ContentConstants.LST_ENR_DATE, date))
     toLocalDateOpt(retirementStr).foreach(date => retirementMap.put(ContentConstants.RET_DATE, date))
     val now = new Date()
+    val cassandraDate: CassandraLocalDate =
+      CassandraLocalDate.fromMillisSinceEpoch(now.getTime)
+
+    retirementMap.put(ContentConstants.CREATED_DATE, cassandraDate)
+
     retirementMap.put(ContentConstants.CREATED_AT, now)
     retirementMap.put(ContentConstants.UPDATED_AT, now)
     retirementMap.put(ContentConstants.STATUS, ContentConstants.PENDING)
     retirementMap.put(ContentConstants.APPROVED, Boolean.box(false))
+    retirementMap.put(ContentConstants.CREATED_DATE, cassandraDate)
     retirementMap
   }
 

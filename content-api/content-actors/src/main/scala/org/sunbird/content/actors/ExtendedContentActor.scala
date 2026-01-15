@@ -32,6 +32,7 @@ import scala.collection.JavaConverters._
 import scala.collection.{JavaConverters, Map}
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
+import com.datastax.driver.core.{LocalDate => CassandraLocalDate}
 
 class ExtendedContentActor @Inject() (implicit oec: OntologyEngineContext, ss: StorageService) extends BaseActor {
 
@@ -571,12 +572,16 @@ class ExtendedContentActor @Inject() (implicit oec: OntologyEngineContext, ss: S
             s"Invalid action for retirement decision: $action"
           )
       }
+    val now = new java.util.Date()
+    val cassandraApprovedDate: CassandraLocalDate =
+      CassandraLocalDate.fromMillisSinceEpoch(now.getTime)
     update
       .`with`(QueryBuilder.set(ContentConstants.APPROVED, java.lang.Boolean.TRUE))
       .and(QueryBuilder.set(ContentConstants.APPROVED_BY_RQST, approvedBy))
       .and(QueryBuilder.set(ContentConstants.APPROVED_AT, new java.util.Date()))
       .and(QueryBuilder.set(ContentConstants.STATUS, statusValue))
       .and(QueryBuilder.set(ContentConstants.APPROVED_COMMENT, action))
+      .and(QueryBuilder.set(ContentConstants.APPROVED_DATE, cassandraApprovedDate))
 
     CassandraConnector.getSession
       .executeAsync(update)

@@ -198,4 +198,6 @@ object ContentConstants {
     val PRELIMINARY_ASSESSMENT_DETAIL = "preliminaryAssessmentDetail"
     val ERROR = "error"
     val FIELDS = "fields"
+    val CREATED_DATE = "created_date"
+    val APPROVED_DATE = "approved_date"
 }
